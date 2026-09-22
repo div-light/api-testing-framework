@@ -1,4 +1,5 @@
 import requests
+from utilities.logger import logger
 
 class APIClient:
     def __init__(self, base_url):
@@ -15,14 +16,14 @@ class APIClient:
         return response
 
     def post(self, endpoint, data=None, json=None, params=None, headers=None):
-        url = f"{self.base_url}{endpoint}"
-        response = requests.post(url,
-            data=data,
-            json=json,
-            params=params,
-            headers=headers
-        )
-    
+        logger.info(f"POST {endpoint}")
+        response = requests.post(
+        self.base_url + endpoint,
+        data=data,
+        json=json,
+        params=params,
+        headers=headers)
+        logger.info(f"Response status: {response.status_code}")
         return response
 
     def put(self, endpoint, data=None):

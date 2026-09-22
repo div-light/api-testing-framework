@@ -1,14 +1,21 @@
-def test_invalid_login(api_client):
+from test_data.test_data import INVALID_LOGINS
+from utilities.assertions import assert_status_code
+import pytest
 
-    invalid_credentials = {
-        "userEmail": "testuser77@test.com",
-        "userPassword": "Test25@@!!"
+@pytest.mark.parametrize(
+    "email, password, expected_status",
+    INVALID_LOGINS
+)
+def test_invalid_login(api_client, email, password, expected_status):
+
+    payload = {
+        "userEmail": email,
+        "userPassword": password
     }
 
     response = api_client.post(
-        "login/auth",
-        json=invalid_credentials
+        "auth/login",
+        json=payload
     )
 
-    print(response.status_code)
-    print(response.text)
+    assert_status_code(response, expected_status)
